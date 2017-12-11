@@ -1,4 +1,6 @@
+
 def reset
+
   @f = File.read("./input.txt").split("\n")
 end
 
@@ -44,6 +46,7 @@ class Node
 end
 
 def parse
+  reset
   @data = @f.map{|el| el.split("->")}.map{|el| el.map{|e| e.strip}}.map{|el| [el[0].split(" ").first] + [eval(el[0].split(" ").last)]  + (el[1].nil? ? [[]] : [el[1].split(", ")])}
 end
 
