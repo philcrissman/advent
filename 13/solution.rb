@@ -1,25 +1,9 @@
-class ScanningArray
-  include Enumerable
+@data = File.read("./input.txt").split("\n").map{|n| n.split(": ").map(&:to_i)}.to_h
 
-  attr_reader :direction
-  attr_reader :size
-  attr_reader :enum
+@firewall = Array.new(99)
 
-  def initialize(size, direction = "+")
-    @size = size
-    @direction = direction
-    @enum = Array.new(size){""}.to_enum
-  end
+@firewall = @firewall.each_with_index.map{|n,i| next if @data[i].nil?; ((0..@data[i]-1).to_a + (1..@data[i]-2).to_a.reverse).cycle}
 
-  def toggle
-    if @direction == "+"
-      @direction = "-"
-    elsif @direction = "-"
-      @direction = "+"
-    end
-  end
+@results = (0..98).map{|n| n if @firewall.map{|e| next if e.nil?; e.next}[n] == 0}.select{|n| n if !n.nil?}
 
-  def next
-    
-  end
-end
+@severity = @results.map{|i| i * @data[i]}.inject(&:+)
